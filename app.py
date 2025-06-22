@@ -229,16 +229,18 @@ def index():
                                     <div class="col">
                                         <div class="preset-card" data-preset-id="{{ preset.id }}" style="cursor: pointer;">
                                             <div class="preset-body">
-                                                <h3 class="preset-title">{{ preset.name }}</h3>
-                                                <p class="preset-description">{{ preset.description }}</p>
                                                 <div class="card-preview">
+                                                    <div class="preview-header">
+                                                        <h3 class="preset-title">{{ preset.name }}</h3>
+                                                        <p class="preset-description">{{ preset.description }}</p>
+                                                    </div>
                                                     <div class="preview-iframe-container">
                                                         <iframe class="preview-iframe" sandbox="allow-scripts" data-preset-id="{{ preset.id }}"></iframe>
-                                                    </div>
-                                                    <div class="preview-actions">
-                                                        <button class="btn btn-sm btn-outline-primary preview-btn" data-preset-id="{{ preset.id }}">
-                                                            <i class="bi bi-arrows-fullscreen"></i> Expandir
-                                                        </button>
+                                                        <div class="preview-overlay">
+                                                            <button class="btn btn-sm btn-outline-light preview-btn" data-preset-id="{{ preset.id }}" title="Expandir">
+                                                                <i class="bi bi-arrows-fullscreen"></i>
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="preview-container" id="preview-{{ preset.id }}" style="display: none;">
@@ -440,20 +442,35 @@ def index():
                         <html>
                         <head>
                             <base target="_parent">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
                             <style>
                                 ${cssContent.replace(/`/g, '\`')}
                                 body { 
-                                    margin: 0; 
-                                    padding: 5px;
-                                    transform-origin: 0 0;
-                                    transform: scale(0.5);
-                                    width: 200%;
-                                    height: 200%;
+                                    margin: 0;
+                                    padding: 0;
+                                    width: 100%;
+                                    height: 100%;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    overflow: hidden;
+                                }
+                                .preview-content {
+                                    transform: scale(0.7);
+                                    transform-origin: center;
+                                    width: 143%;
+                                    max-width: 100%;
+                                    text-align: center;
+                                }
+                                * {
+                                    max-width: 100% !important;
                                 }
                             </style>
                         </head>
                         <body>
-                            ${htmlContent.replace(/`/g, '\`')}
+                            <div class="preview-content">
+                                ${htmlContent.replace(/`/g, '\`')}
+                            </div>
                         </body>
                         </html>
                     `;
@@ -548,45 +565,93 @@ def index():
             }
             
             /* Card Preview Styles */
-            .card-preview {
-                margin-top: 1rem;
-                border: 1px solid #dee2e6;
-                border-radius: 0.25rem;
+            .preset-card {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                padding: 0;
                 overflow: hidden;
+            }
+            
+            .preset-body {
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+            }
+            
+            .card-preview {
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+                height: 100%;
                 background: #f8f9fa;
+            }
+            
+            .preview-header {
+                padding: 1rem 1rem 0.5rem;
+                background: white;
+                border-bottom: 1px solid rgba(0,0,0,0.1);
+            }
+            
+            .preset-title {
+                font-size: 1.1rem;
+                margin: 0 0 0.25rem 0;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            
+            .preset-description {
+                font-size: 0.8rem;
+                color: #6c757d;
+                margin: 0;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
             
             .preview-iframe-container {
                 position: relative;
-                width: 100%;
-                height: 200px;
-                overflow: hidden;
+                flex-grow: 1;
+                min-height: 200px;
                 background: white;
+                overflow: hidden;
             }
             
             .preview-iframe {
+                position: absolute;
+                top: 0;
+                left: 0;
                 width: 100%;
                 height: 100%;
                 border: none;
-                transform-origin: 0 0;
-                transform: scale(0.5);
                 pointer-events: none;
+                background: white;
             }
             
-            .preview-actions {
-                padding: 0.5rem;
-                background: #f8f9fa;
-                border-top: 1px solid #dee2e6;
-                text-align: center;
+            .preview-overlay {
+                position: absolute;
+                top: 0.5rem;
+                right: 0.5rem;
+                z-index: 10;
+                opacity: 0;
+                transition: opacity 0.2s;
+            }
+            
+            .preview-iframe-container:hover .preview-overlay {
+                opacity: 1;
             }
             
             .preview-btn {
-                font-size: 0.75rem;
-                padding: 0.15rem 0.5rem;
-            }
-            
-            .preview-btn i {
-                margin-right: 0.25rem;
+                width: 32px;
+                height: 32px;
+                padding: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             }
         </style>
         
@@ -599,3 +664,4 @@ def index():
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
+
