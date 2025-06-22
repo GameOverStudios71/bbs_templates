@@ -468,9 +468,7 @@ def index():
                             </style>
                         </head>
                         <body>
-                            <div class="preview-content">
-                                ${htmlContent.replace(/`/g, '\`')}
-                            </div>
+                            ${htmlContent.replace(/`/g, '\`')}
                         </body>
                         </html>
                     `;
