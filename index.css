@@ -1,0 +1,101 @@
+/* index.css */
+:root {
+    /* Layout dimensions */
+    --canvas-width: 88%;
+    --canvas-height: 80%;
+    --canvas-border-width: 0px;
+    --canvas-border-color: gray;
+    --canvas-bg-color: blue;
+
+    /* Decorative elements */
+    --decorative-size: 100px;
+    --decorative-bg-color: black;
+    --decorative-padding: 0px;
+
+    /* Spacing */
+    --container-padding: 16px; /* p-4 do Tailwind */
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Orbitron', 'Exo 2', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* overflow-hidden is good for a full-screen app like this */
+}
+
+html, body {
+    height: 100%; 
+    width: 100%; /* Ensure full width as well */
+}
+
+/* Custom scrollbar for webkit browsers for Layer 2 if content overflows */
+#layer-2::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+#layer-2::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+#layer-2::-webkit-scrollbar-thumb {
+    background: rgba(30, 200, 200, 0.5);
+    border-radius: 10px;
+}
+#layer-2::-webkit-scrollbar-thumb:hover {
+    background: rgba(30, 200, 200, 0.7);
+}
+#layer-2 {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(30, 200, 200, 0.5) rgba(255, 255, 255, 0.05);
+}
+
+/* Canvas area */
+.canvas-area {
+    border: var(--canvas-border-width) solid var(--canvas-border-color);
+    background-color: var(--canvas-bg-color);
+    width: var(--canvas-width);
+    height: var(--canvas-height);
+}
+
+/* Decorative elements */
+.decorative-element {
+    width: var(--decorative-size);
+    height: var(--decorative-size);
+    background-color: var(--decorative-bg-color);
+    padding: var(--decorative-padding);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-sizing: border-box;
+    position: absolute;
+    transform: translate(-50%, -50%); /* Centraliza o pivot do elemento */
+}
+
+/* Position calculations */
+[data-anchor-x="left"] {
+    left: calc(50% - var(--canvas-width) / 2 + var(--canvas-border-width) + var(--container-padding));
+}
+
+[data-anchor-x="right"] {
+    left: calc(50% + var(--canvas-width) / 2 - var(--canvas-border-width) - var(--container-padding));
+}
+
+[data-anchor-x="center"] {
+    left: 50%;
+}
+
+[data-anchor-y="top"] {
+    top: calc(50% - var(--canvas-height) / 2 + var(--canvas-border-width) + var(--container-padding));
+}
+
+[data-anchor-y="bottom"] {
+    top: calc(50% + var(--canvas-height) / 2 - var(--canvas-border-width) - var(--container-padding));
+}
+
+[data-anchor-y="center"] {
+    top: 50%;
+}
