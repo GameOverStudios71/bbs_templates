@@ -1,1 +1,0 @@
-# bbs_templates
